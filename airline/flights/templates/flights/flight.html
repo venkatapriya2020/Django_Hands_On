@@ -1,0 +1,31 @@
+{% extends "flights/base.html" %}
+    {% block title %} Flight {{flight.id}} {% endblock %}
+{% block body %}
+    <h1>Flights {{flight.id}}</h1>
+    <ul>
+      <li>Origin : {{flight.origin}}</li>
+      <li>Destination : {{flight.destination}}</li>
+    </ul>
+    <h2>Passengers</h2>
+    <ul>
+      {% for passenger in passengers %}
+        <li>{{ passenger }}</li>
+      {% empty %}
+        <li>No Passengers</li>
+      {% endfor %}
+    </ul>
+    {% if non_passengers %}
+    <h2>Add a passenger</h2>
+
+    <form action="{% url 'book' flight.id %}" method="post">
+      {% csrf_token %}
+      <select name="passenger">
+        {% for non_passenger in non_passengers %}
+          <option value="{{non_passenger.id}}">{{non_passenger}}</option>
+        {% endfor %}
+      </select>
+        <input type="submit" value="Book Flight">
+    </form>
+    {% endif %}
+    <a href="{% url 'index' %}">Go to listing</a>
+{% endblock %}
